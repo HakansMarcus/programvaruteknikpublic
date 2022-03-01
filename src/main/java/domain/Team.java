@@ -7,39 +7,31 @@ package domain;
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.BelongsTo;
 import org.javalite.activejdbc.annotations.IdName;
+import records.TeamRecord;
 
 /**
  *
  * @author marcu
  */
-@IdName("teamsid")
-@BelongsTo(parent = Game.class, foreignKeyName = "gamesid")
-public class Team extends Model {
+//@IdName("teamsid")
+//@BelongsTo(parent = Game.class, foreignKeyName = "gamesid")
+public class Team {
     
-    private String teamsname;
-    private int teamsid;
-    private int participants;
-    private String teamcolor;
+    private final TeamRecord theRecord;
     
-    /*
-    Sätta in värdena direkt till databasen i konstruktorn?
-    */
-    public Team(String teamsname, int teamsid, int participants, String teamcolor){
-        this.teamsname = teamsname;
-        this.teamsid = teamsid;
-        this.participants = participants;
-        this.teamcolor = teamcolor;
+    public Team() {
+        this(new TeamRecord());
     }
-   
-    public Team(){
-        
+    
+    public Team(TeamRecord theRecord) {
+        this.theRecord = theRecord;
     }
     
     public String getName() {
-        return getString("teamsname");
+        return theRecord.getString("teamsname");
     }
     
     public int getID() {
-        return getInteger("teamsid");
+        return theRecord.getInteger("teamsid");
     }
 }

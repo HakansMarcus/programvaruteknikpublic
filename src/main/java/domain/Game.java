@@ -4,44 +4,55 @@
  */
 package domain;
 
+import java.util.List;
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.BelongsTo;
 import org.javalite.activejdbc.annotations.IdName;
+import records.GameRecord;
+import records.SeasonRecord;
+import records.TeamRecord;
 
 /**
  *
  * @author marcu
  */
-@IdName("gamesid")
-@BelongsTo(parent = Season.class, foreignKeyName="seasonsid")
-public class Game extends Model {
+//@IdName("gamesid")
+//@BelongsTo(parent = SeasonRecord.class, foreignKeyName="seasonsid")
+public class Game {
+    
+    private final GameRecord theRecord;
+    
+    public Game() {
+        this(new GameRecord());
+    }
+    
+    public Game(GameRecord theRecord) {
+        this.theRecord = theRecord;
+    }
     
     
      public String getName() {
-        return getString("gamesname");
+        return theRecord.getString("gamesname");
     }
     
     public int getID() {
-        return getInteger("gamesid");
+        return theRecord.getInteger("gamesid");
     }
     
-    public int getTeamsID() {
-        return getInteger("teamsid");
-    }
-    
-    public int getSeasonsID() {
-        return getInteger("seasonsid");
-    }
-    
-    public int getResultsID() {
-        return getInteger("resultsid");
-    }
-    
-    public String getPlace() {
-        return getString("place");
-    }
-    
-   
-    
-    
+//    // getTeam objek.
+//    public List<TeamRecord> getTeams() {
+//        return teamrecord.findAll();
+//    }
+//    
+//    public int getSeasonsID() {
+//        return getInteger("seasonsid");
+//    }
+//    
+//    public int getResultsID() {
+//        return getInteger("resultsid");
+//    }
+//    
+//    public String getPlace() {
+//        return getString("place");
+//    }   
 }
