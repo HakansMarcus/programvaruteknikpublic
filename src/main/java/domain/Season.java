@@ -4,44 +4,55 @@
  */
 package domain;
 
+import static java.lang.Integer.getInteger;
+import static javax.swing.UIManager.getString;
 import org.javalite.activejdbc.MetaModel;
 import org.javalite.activejdbc.Model;
+import static org.javalite.activejdbc.Model.getMetaModel;
 import org.javalite.activejdbc.annotations.BelongsTo;
 import org.javalite.activejdbc.annotations.IdName;
+import records.SeasonRecord;
 
 /**
  *
  * @author Marcus Håkans
  * @version 2021-02-07
  */
-@IdName("seasonsid")
-@BelongsTo(parent = League.class, foreignKeyName = "leaguesid")
-public class Season extends Model {
+//@IdName("seasonsid")
+//@BelongsTo(parent = League.class, foreignKeyName = "leaguesid")
+public class Season {
     
-    private League league;
+    private final SeasonRecord theRecord;
+  
     
-    /*
-    Få in id-nr ifrån League tabellen till konstruktorn?
-    */
-//    public Season(League league) {
-//        this.league = new League(); // composition
-//        league.set("seasonsname", "Season 1");
-//        System.out.println(league.getID());
-//        
-//    }
+    public Season() {
+        this(new SeasonRecord());
+    }
    
     
+    public Season(SeasonRecord theRecord) {
+        this.theRecord = theRecord;
+    }
+    
     public String getName() {
-        return getString("seasonsname");
+        return theRecord.getString("seasonsname");
     }
     
     
     public int getID() {
-        return getInteger("seasonsid");
+        return theRecord.getInteger("seasonsid");
     }
     
    public MetaModel getModel() {
        return getMetaModel();
    }
+   
+   public SeasonRecord getRecord() {
+        return theRecord;
+    }
+   
+    public static Season findById(int i) {
+        return new Season(SeasonRecord.findById(i));
+    }  
     
 }

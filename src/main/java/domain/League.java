@@ -4,10 +4,15 @@
  */
 package domain;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.HasMany;
 import org.javalite.activejdbc.annotations.IdName;
+import org.javalite.activejdbc.annotations.Table;
+import records.LeagueRecord;
 
 /**
  *
@@ -17,46 +22,52 @@ import org.javalite.activejdbc.annotations.IdName;
 /*
 @Override IdName fixar till så man kan lägga in värden, utan att id-tabellen skall explicit heta id.
 */
-@IdName("leaguesid")
-@HasMany(child = Season.class, foreignKeyName = "seasonsid")
-public class League extends Model {
+
+//@IdName("leaguesid")
+//@HasMany(child = Season.class, foreignKeyName = "seasonsid")
+public class League {
     
-    private String leagueName;
-    private int leaguesID;
+    private final LeagueRecord theRecord;
+  
     
-    public League(String leaguesName, int leaguesID) {
-        this.leagueName = leaguesName;
-        this.leaguesID = leaguesID;
+    public League() {
+        this(new LeagueRecord());
     }
     
-    public League(){
-        
+    public League(LeagueRecord theRecord) {
+        this.theRecord = theRecord;
     }
+    
     
     public String getName() {
-        return getString("leaguesname");
+        String name = theRecord.getString("leaguesname");
+        return name;
     }
     
     public int getID(){
-        return getInteger("leaguesid");
+        return theRecord.getInteger("leaguesid");
+    }
+    
+    public String setName(String name) {
+        theRecord.set("name", name);
+        return name;
+    }
+    
+    public static List<League> findAll(){
+        List<LeagueRecord> leagueRecordList = LeagueRecord.findAll();
+//        List<League> leagueList = new ArrayList();
+//        for( LeagueRecord lr : leagueRecordList) {
+//            leagueList.add(new League(lr));
+//        }
+        return leagueRecordList.stream().map((r)-> new League(r)).collect(Collectors.toList());
+    }
+    
+    public LeagueRecord getRecord() {
+        return theRecord;
     }
     
     
-    
-    
-//    public List<Season>(){
-//        List<Season> seasons =
-//    }
-    
-    /*
-    select leaguesid from leagues where leaguesname = 'name'
-    
-    Hämta in en lista utav alla seasons
-    
-    getidByName("Donald duck") --> 4
-    */
-//    public int getidByName(String name) {
-//        
-//    }
-    
+    public static League findById(int i) {
+        return new League(LeagueRecord.findById(i));
+    }  
 }
